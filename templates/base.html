@@ -8,6 +8,8 @@
     <title>{% block title %}Youlyzer{% endblock %} — YouTube Analyzer</title>
     <meta name="description"
         content="{% block meta_description %}Download YouTube thumbnails in all qualities, and view detailed video & channel information — all free.{% endblock %}">
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}">
