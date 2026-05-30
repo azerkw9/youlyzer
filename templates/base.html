@@ -9,6 +9,23 @@
     <meta name="description"
         content="{% block meta_description %}Download YouTube thumbnails in all qualities, and view detailed video & channel information — all free.{% endblock %}">
 
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+    <meta property="og:title" content="{% block og_title %}Youlyzer — YouTube Analyzer{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Download YouTube thumbnails in all qualities, and view detailed video & channel information — all free.{% endblock %}">
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'img/og-image.png' %}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+    <meta property="twitter:title" content="{% block twitter_title %}Youlyzer — YouTube Analyzer{% endblock %}">
+    <meta property="twitter:description" content="{% block twitter_description %}Download YouTube thumbnails in all qualities, and view detailed video & channel information — all free.{% endblock %}">
+    <meta property="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'img/og-image.png' %}">
+
     <!-- Anti-flash: set dark class before any rendering -->
     <script>
         (function () {
