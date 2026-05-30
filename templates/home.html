@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+{% block meta_description %}Download YouTube thumbnails in all qualities and view video & channel details. Free YouTube analysis tools.{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 bg-gradient-to-br from-brand-600 via-brand-700 to-brand-900"></div>
+    <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;1&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+        <div class="text-center">
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 border border-white/20 text-white/90 text-xs font-medium tracking-wide uppercase mb-6 backdrop-blur-sm">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                Free Analysis Tools
+            </div>
+
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight mb-4">
+                Analyze Any<br>
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-brand-200 to-white">YouTube Video</span>
+            </h1>
+            <p class="text-lg md:text-xl text-brand-200 max-w-2xl mx-auto mb-10 leading-relaxed">
+                Download thumbnails in all qualities, view detailed video info, and explore channel data — all in one place.
+            </p>
+
+            <!-- Search Form -->
+            <form method="post" action="{% url 'analyze' %}" class="max-w-2xl mx-auto" id="analyze-form">
+                {% csrf_token %}
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <div class="flex-1 relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="square" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                        <input type="url" name="url"
+                               placeholder="Enter YouTube URL (video or channel)"
+                               class="w-full pl-12 pr-4 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-0 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-300 shadow-xl shadow-black/10 text-base"
+                               required
+                               autocomplete="off"
+                               id="youtube-url-input">
+                    </div>
+                    <button type="submit"
+                            class="px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-semibold hover:bg-gray-800 dark:hover:bg-gray-100 shadow-xl shadow-black/20 transition-all duration-200 flex items-center justify-center gap-2 text-base"
+                            id="analyze-btn">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="square" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                            <path stroke-linecap="square" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Analyze
+                    </button>
+                </div>
+                <p class="mt-3 text-xs text-brand-300/70">Supports video URLs, shorts, and channel URLs</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Wave Divider -->
+    <div class="absolute bottom-0 left-0 right-0">
+        <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
+            <path d="M0 60L1440 60L1440 0L0 40Z" class="fill-gray-50 dark:fill-gray-950"/>
+        </svg>
+    </div>
+</section>
+
+<!-- Features Grid -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="text-center mb-12">
+        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3">Everything You Need</h2>
+        <p class="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">Powerful YouTube analysis tools, completely free.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Feature 1 -->
+        <div class="group bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-6 shadow-sm hover:shadow-lg hover:border-brand-300 dark:hover:border-brand-700 transition-all duration-300" id="feature-thumbnails">
+            <div class="w-12 h-12 bg-brand-50 dark:bg-brand-950/50 flex items-center justify-center mb-4 group-hover:bg-brand-100 dark:group-hover:bg-brand-900/50 transition-colors duration-300">
+                <svg class="w-6 h-6 text-brand-600 dark:text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="square" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Thumbnails</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Download thumbnails in all available qualities — from default to max resolution.</p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="group bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-6 shadow-sm hover:shadow-lg hover:border-brand-300 dark:hover:border-brand-700 transition-all duration-300" id="feature-videoinfo">
+            <div class="w-12 h-12 bg-amber-50 dark:bg-amber-950/50 flex items-center justify-center mb-4 group-hover:bg-amber-100 dark:group-hover:bg-amber-900/30 transition-colors duration-300">
+                <svg class="w-6 h-6 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="square" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Video Data</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">View detailed stats: views, likes, duration, tags, upload date, and more.</p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="group bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-6 shadow-sm hover:shadow-lg hover:border-brand-300 dark:hover:border-brand-700 transition-all duration-300" id="feature-channelinfo">
+            <div class="w-12 h-12 bg-rose-50 dark:bg-rose-950/50 flex items-center justify-center mb-4 group-hover:bg-rose-100 dark:group-hover:bg-rose-900/30 transition-colors duration-300">
+                <svg class="w-6 h-6 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="square" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Channel Info</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Explore channel details: subscribers, video count, description, and latest uploads.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Recent Searches (rendered from localStorage) -->
+<section id="recent-searches-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 hidden">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100">Recent Searches</h2>
+        <button type="button" id="clear-history-btn"
+                class="text-xs text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            Clear History
+        </button>
+    </div>
+    <div id="recent-searches-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+        <!-- Populated by JS -->
+    </div>
+</section>
+
+<script>
+(function() {
+    try {
+        const history = JSON.parse(localStorage.getItem('youlyzer-history') || '[]');
+        if (!history.length) return;
+
+        const section = document.getElementById('recent-searches-section');
+        const grid = document.getElementById('recent-searches-grid');
+        section.classList.remove('hidden');
+
+        history.forEach(function(item) {
+            const ago = _timeAgo(item.timestamp);
+            const isVideo = item.type === 'video';
+            const resultUrl = isVideo
+                ? '/results/video/?url=' + encodeURIComponent(item.url)
+                : '/results/channel/?url=' + encodeURIComponent(item.url);
+
+            const card = document.createElement('a');
+            card.href = resultUrl;
+            card.className = 'group block bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 overflow-hidden hover:border-brand-300 dark:hover:border-brand-700 hover:shadow-md transition-all duration-300';
+
+            const thumbSrc = item.thumbnail || 'https://img.youtube.com/vi/default/default.jpg';
+            const badgeColor = isVideo
+                ? 'bg-brand-600 text-white'
+                : 'bg-rose-600 text-white';
+            const badgeText = isVideo ? 'Video' : 'Channel';
+
+            card.innerHTML =
+                '<div class="aspect-video bg-gray-100 dark:bg-gray-800 overflow-hidden relative">' +
+                    '<img src="' + _escHtml(thumbSrc) + '" alt="' + _escHtml(item.title) + '" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" onerror="this.style.display=\'none\'">' +
+                    '<span class="absolute top-1 left-1 px-1.5 py-0.5 text-[9px] font-bold uppercase ' + badgeColor + '">' + badgeText + '</span>' +
+                '</div>' +
+                '<div class="p-2.5">' +
+                    '<h3 class="text-xs font-medium text-gray-900 dark:text-gray-100 line-clamp-2 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors duration-200">' + _escHtml(item.title) + '</h3>' +
+                    '<p class="text-[10px] text-gray-400 dark:text-gray-500 mt-1">' + ago + '</p>' +
+                '</div>';
+
+            grid.appendChild(card);
+        });
+
+        document.getElementById('clear-history-btn').addEventListener('click', function() {
+            localStorage.removeItem('youlyzer-history');
+            section.classList.add('hidden');
+        });
+
+    } catch(e) {}
+
+    function _timeAgo(ts) {
+        const diff = Date.now() - ts;
+        const mins = Math.floor(diff / 60000);
+        if (mins < 1) return 'Just now';
+        if (mins < 60) return mins + 'm ago';
+        const hrs = Math.floor(mins / 60);
+        if (hrs < 24) return hrs + 'h ago';
+        const days = Math.floor(hrs / 24);
+        if (days < 7) return days + 'd ago';
+        return new Date(ts).toLocaleDateString();
+    }
+
+    function _escHtml(str) {
+        if (!str) return '';
+        var d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+    }
+})();
+</script>
+
+<!-- Ads Section -->
+{% if ads %}
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+    <div class="border-t border-gray-200 dark:border-gray-800 pt-8">
+        <p class="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4 text-center">Sponsored</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for ad in ads %}
+            <a href="{{ ad.link|default:'#' }}" target="_blank" rel="noopener noreferrer"
+               class="block bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-md transition-shadow duration-300 group" id="ad-{{ ad.pk }}">
+                {% if ad.image %}
+                <div class="aspect-video overflow-hidden bg-gray-100 dark:bg-gray-800">
+                    <img src="{{ ad.image.url }}" alt="{{ ad.title }}"
+                         class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300">
+                </div>
+                {% endif %}
+                <div class="p-4">
+                    <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-1">{{ ad.title }}</h3>
+                    {% if ad.text %}
+                    <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{{ ad.text }}</p>
+                    {% endif %}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

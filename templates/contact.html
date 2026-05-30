@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us{% endblock %}
+{% block meta_description %}Contact the Youlyzer team — send us your questions, feedback, or suggestions.{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+        <!-- Contact Info -->
+        <div class="md:col-span-2">
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3">Get in Touch</h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-8">
+                Have a question, suggestion, or just want to say hello? Fill out the form and we'll get back to you as soon as possible.
+            </p>
+
+            <div class="space-y-4">
+                <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 bg-brand-50 dark:bg-brand-950/50 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-brand-600 dark:text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="square" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">Email</h3>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">support@youlyzer.com</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 bg-brand-50 dark:bg-brand-950/50 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-brand-600 dark:text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="square" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">Response Time</h3>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">We typically respond within 24 hours</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="md:col-span-3">
+            <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
+                <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+                    <h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider">Send a Message</h2>
+                </div>
+                <form method="post" action="{% url 'contact' %}" class="p-6 space-y-4" id="contact-form">
+                    {% csrf_token %}
+
+                    <div>
+                        <label for="contact-name" class="block text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1.5">Name</label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                        <p class="text-xs text-red-500 dark:text-red-400 mt-1">{{ form.name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <label for="contact-email" class="block text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1.5">Email</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                        <p class="text-xs text-red-500 dark:text-red-400 mt-1">{{ form.email.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <label for="contact-subject" class="block text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1.5">Subject</label>
+                        {{ form.subject }}
+                        {% if form.subject.errors %}
+                        <p class="text-xs text-red-500 dark:text-red-400 mt-1">{{ form.subject.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <label for="contact-message" class="block text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1.5">Message</label>
+                        {{ form.message }}
+                        {% if form.message.errors %}
+                        <p class="text-xs text-red-500 dark:text-red-400 mt-1">{{ form.message.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit"
+                            class="w-full px-6 py-3 bg-brand-600 text-white font-semibold hover:bg-brand-700 shadow-md shadow-brand-500/20 transition-all duration-200 flex items-center justify-center gap-2"
+                            id="contact-submit-btn">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="square" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                        </svg>
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

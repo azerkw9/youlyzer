@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Message: {{ msg.subject }}{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-6">
+        <a href="{% url 'admin_messages_list' %}" class="text-xs text-gray-500 hover:text-brand-600 mb-1 inline-block">← Back to Messages</a>
+        <h1 class="text-2xl font-bold text-gray-900">{{ msg.subject }}</h1>
+    </div>
+
+    <div class="bg-white border border-gray-200 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-900">{{ msg.name }}</p>
+                <p class="text-xs text-gray-500">{{ msg.email }}</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-xs text-gray-400">{{ msg.sent_at|date:"M d, Y H:i" }}</span>
+                {% if msg.is_read %}
+                <span class="px-2 py-1 bg-gray-100 text-gray-500 text-xs font-medium">Read</span>
+                {% else %}
+                <span class="px-2 py-1 bg-brand-50 text-brand-700 text-xs font-medium">Unread</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="p-6">
+            <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{{ msg.message }}</p>
+        </div>
+        <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center gap-3">
+            <a href="{% url 'admin_message_toggle_read' msg.pk %}"
+               class="px-4 py-2 bg-blue-50 text-blue-600 text-sm font-medium hover:bg-blue-100 transition-colors duration-200">
+                {% if msg.is_read %}Mark as Unread{% else %}Mark as Read{% endif %}
+            </a>
+            <a href="mailto:{{ msg.email }}?subject=Re: {{ msg.subject }}"
+               class="px-4 py-2 bg-brand-600 text-white text-sm font-medium hover:bg-brand-700 transition-colors duration-200">Reply via Email</a>
+            <form method="post" action="{% url 'admin_message_delete' msg.pk %}" class="ml-auto" onsubmit="return confirm('Delete this message?')">
+                {% csrf_token %}
+                <button type="submit" class="px-4 py-2 bg-red-50 text-red-600 text-sm font-medium hover:bg-red-100 transition-colors duration-200">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

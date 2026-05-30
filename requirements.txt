@@ -1,0 +1,9 @@
+django>=5.0,<6.0
+google-api-python-client
+isodate
+Pillow
+python-decouple
+gunicorn
+whitenoise
+dj-database-url
+psycopg2-binary

@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{% load static core_tags %}
+
+{% block title %}{{ channel.channel_name }}{% endblock %}
+{% block meta_description %}Explore {{ channel.channel_name }}'s YouTube channel — subscribers, latest videos, and channel details.{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Back Link -->
+    <a href="{% url 'home' %}" class="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors duration-200 mb-6" id="back-link">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Back to Home
+    </a>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Content -->
+        <div class="lg:col-span-2 space-y-8">
+
+            <!-- Channel Header Card -->
+            <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden" id="channel-header">
+                <div class="bg-gradient-to-r from-brand-600 to-brand-800 h-24"></div>
+                <div class="p-6 -mt-10">
+                    <div class="flex items-end gap-4 mb-4">
+                        {% if channel.avatar %}
+                        <img src="{{ channel.avatar }}" alt="{{ channel.channel_name }}"
+                             class="w-20 h-20 object-cover border-4 border-white dark:border-gray-900 shadow-md">
+                        {% else %}
+                        <div class="w-20 h-20 bg-brand-100 dark:bg-brand-900/50 border-4 border-white dark:border-gray-900 shadow-md flex items-center justify-center">
+                            <span class="text-2xl font-bold text-brand-600 dark:text-brand-400">{{ channel.channel_name|first }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="pb-1">
+                            <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ channel.channel_name }}</h1>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-6 mb-4">
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ channel.subscriber_count }}</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Subscribers</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ channel.total_videos }}</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Videos</p>
+                        </div>
+                    </div>
+
+                    {% if channel.description %}
+                    <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{{ channel.description|truncate_text:300 }}</p>
+                    {% endif %}
+
+                    {% if channel.channel_url %}
+                    <a href="{{ channel.channel_url }}" target="_blank" rel="noopener"
+                       class="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-brand-600 text-white text-sm font-medium hover:bg-brand-700 shadow-md shadow-brand-500/20 transition-all duration-200">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        Visit Channel on YouTube
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Latest Videos -->
+            {% if channel.videos %}
+            <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden" id="latest-videos">
+                <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+                    <h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider">Latest Videos</h2>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {% for vid in channel.videos %}
+                        <a href="{% url 'video_results' %}?url={{ vid.url|urlencode }}"
+                           class="group block border border-gray-200 dark:border-gray-700 overflow-hidden hover:border-brand-300 dark:hover:border-brand-700 hover:shadow-md transition-all duration-300" id="video-card-{{ vid.id }}">
+                            <div class="aspect-video bg-gray-100 dark:bg-gray-800 overflow-hidden relative">
+                                <img src="{{ vid.thumbnail }}" alt="{{ vid.title }}"
+                                     class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300"
+                                     loading="lazy">
+                                {% if vid.duration %}
+                                <span class="absolute bottom-1 right-1 bg-black/80 text-white text-[10px] font-mono px-1.5 py-0.5">
+                                    {{ vid.duration|format_duration_seconds }}
+                                </span>
+                                {% endif %}
+                            </div>
+                            <div class="p-3">
+                                <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 line-clamp-2 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors duration-200">{{ vid.title }}</h3>
+                                {% if vid.view_count %}
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ vid.view_count|format_number }} views</p>
+                                {% endif %}
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+            <!-- Channel Stats -->
+            <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden" id="channel-stats">
+                <div class="px-5 py-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider">Channel Details</h3>
+                </div>
+                <div class="divide-y divide-gray-100 dark:divide-gray-800">
+                    <div class="px-5 py-3 flex items-center justify-between">
+                        <span class="text-sm text-gray-500 dark:text-gray-400">Subscribers</span>
+                        <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ channel.subscriber_count }}</span>
+                    </div>
+                    <div class="px-5 py-3 flex items-center justify-between">
+                        <span class="text-sm text-gray-500 dark:text-gray-400">Total Videos</span>
+                        <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ channel.total_videos }}</span>
+                    </div>
+                    {% if channel.channel_id %}
+                    <div class="px-5 py-3">
+                        <span class="text-sm text-gray-500 dark:text-gray-400">Channel ID</span>
+                        <p class="text-xs font-mono text-gray-600 dark:text-gray-400 mt-1 break-all">{{ channel.channel_id }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Sidebar Ads -->
+            {% if sidebar_ads %}
+            <div class="space-y-4">
+                <p class="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wider">Sponsored</p>
+                {% for ad in sidebar_ads %}
+                <a href="{{ ad.link|default:'#' }}" target="_blank" rel="noopener noreferrer"
+                   class="block bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-md transition-shadow duration-300" id="sidebar-ad-{{ ad.pk }}">
+                    {% if ad.image %}
+                    <img src="{{ ad.image.url }}" alt="{{ ad.title }}" class="w-full aspect-video object-cover">
+                    {% endif %}
+                    <div class="p-3">
+                        <h4 class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ ad.title }}</h4>
+                        {% if ad.text %}
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">{{ ad.text }}</p>
+                        {% endif %}
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function() {
+    try {
+        const entry = {
+            title: "{{ channel.channel_name|escapejs }}",
+            url: '{{ url|escapejs }}',
+            thumbnail: '{{ channel.avatar|escapejs }}',
+            type: 'channel',
+            videoId: '{{ channel.channel_id|escapejs }}',
+            timestamp: Date.now()
+        };
+
+        let history = [];
+        try { history = JSON.parse(localStorage.getItem('youlyzer-history') || '[]'); } catch(e) {}
+
+        // Remove duplicate by videoId (channel_id)
+        history = history.filter(h => h.videoId !== entry.videoId);
+
+        // Add to front
+        history.unshift(entry);
+
+        // Cap at 10
+        if (history.length > 10) history = history.slice(0, 10);
+
+        localStorage.setItem('youlyzer-history', JSON.stringify(history));
+    } catch(e) {}
+})();
+</script>
+{% endblock %}

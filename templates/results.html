@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+{% load static core_tags %}
+
+{% block title %}{{ video.title }}{% endblock %}
+{% block meta_description %}Analyze "{{ video.title }}" — download thumbnails, view stats and channel info.{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Back Link -->
+    <a href="{% url 'home' %}" class="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors duration-200 mb-6" id="back-link">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Back to Home
+    </a>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Content -->
+        <div class="lg:col-span-2 space-y-8">
+
+            <!-- Video Info Card -->
+            <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden" id="video-info-card">
+                <div class="p-6">
+                    <div class="flex items-start gap-4">
+                        <!-- Video Thumbnail -->
+                        <div class="hidden sm:block w-48 flex-shrink-0">
+                            <img src="https://img.youtube.com/vi/{{ video.video_id }}/mqdefault.jpg"
+                                 alt="{{ video.title }}"
+                                 class="w-full aspect-video object-cover border border-gray-100 dark:border-gray-700">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h1 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2 leading-snug">{{ video.title }}</h1>
+                            <div class="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-500 dark:text-gray-400 mb-3">
+                                <span class="flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="square" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                    {{ video.view_count }} views
+                                </span>
+                                <span class="flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/></svg>
+                                    {{ video.like_count }} likes
+                                </span>
+                                <span class="flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    {{ video.duration }}
+                                </span>
+                                <span class="flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                    {{ video.upload_date }}
+                                </span>
+                            </div>
+                            {% if video.description %}
+                            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-3">{{ video.description|truncatewords:40 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Channel Info Card -->
+            {% if video.channel_name %}
+            <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden" id="channel-info-card">
+                <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+                    <h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider">Channel Information</h2>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-4">
+                        {% if video.channel_avatar %}
+                        <img src="{{ video.channel_avatar }}" alt="{{ video.channel_name }}"
+                             class="w-14 h-14 object-cover border border-gray-200 dark:border-gray-700">
+                        {% else %}
+                        <div class="w-14 h-14 bg-brand-100 dark:bg-brand-900/50 flex items-center justify-center border border-brand-200 dark:border-brand-800">
+                            <span class="text-xl font-bold text-brand-600 dark:text-brand-400">{{ video.channel_name|first }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="flex-1 min-w-0">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ video.channel_name }}</h3>
+                            {% if video.channel_follower_count %}
+                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ video.channel_follower_count|format_number }} subscribers</p>
+                            {% endif %}
+                        </div>
+                        {% if video.channel_url %}
+                        <a href="{{ video.channel_url }}" target="_blank" rel="noopener"
+                           class="ml-auto flex-shrink-0 px-4 py-2 bg-brand-600 text-white text-sm font-medium hover:bg-brand-700 transition-colors duration-200">
+                            Visit Channel
+                        </a>
+                        {% endif %}
+                    </div>
+                    {% if video.channel_created_date or video.channel_video_count or video.channel_view_count %}
+                    <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+                        <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+                            {% if video.channel_created_date %}
+                            <div class="flex items-center gap-1.5 text-gray-500 dark:text-gray-400">
+                                <svg class="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                <span>Created <strong class="text-gray-700 dark:text-gray-300">{{ video.channel_created_date }}</strong></span>
+                            </div>
+                            {% endif %}
+                            {% if video.channel_video_count %}
+                            <div class="flex items-center gap-1.5 text-gray-500 dark:text-gray-400">
+                                <svg class="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                                <span><strong class="text-gray-700 dark:text-gray-300">{{ video.channel_video_count|format_number }}</strong> videos</span>
+                            </div>
+                            {% endif %}
+                            {% if video.channel_view_count %}
+                            <div class="flex items-center gap-1.5 text-gray-500 dark:text-gray-400">
+                                <svg class="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="square" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                <span><strong class="text-gray-700 dark:text-gray-300">{{ video.channel_view_count|format_number }}</strong> views</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Tags -->
+            {% if video.tags %}
+            <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden" id="tags-card">
+                <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+                    <h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider">Tags</h2>
+                </div>
+                <div class="p-6">
+                    <div class="flex flex-wrap gap-2">
+                        {% for tag in video.tags|slice:":20" %}
+                        <span class="px-3 py-1 bg-brand-50 dark:bg-brand-950/50 text-brand-700 dark:text-brand-300 text-xs font-medium border border-brand-200 dark:border-brand-800">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Thumbnails Section -->
+            <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden" id="thumbnails-section">
+                <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+                    <h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider">Thumbnails</h2>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {% for thumb in video.thumbnails %}
+                        <div class="group border border-gray-200 dark:border-gray-700 overflow-hidden hover:border-brand-300 dark:hover:border-brand-700 transition-colors duration-200" id="thumb-{{ thumb.key }}">
+                            <div class="aspect-video bg-gray-100 dark:bg-gray-800 overflow-hidden">
+                                <img src="{{ thumb.url }}" alt="Thumbnail {{ thumb.quality }}"
+                                     class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                                     loading="lazy"
+                                     onerror="this.parentElement.innerHTML='<div class=\'flex items-center justify-center h-full text-gray-400 text-sm\'>Not available</div>'">
+                            </div>
+                            <div class="p-3 flex items-center justify-between bg-white dark:bg-gray-900">
+                                <span class="text-xs font-medium text-gray-600 dark:text-gray-400">{{ thumb.quality }}</span>
+                                <a href="{% url 'download_thumbnail' %}?url={{ thumb.url|urlencode }}&filename={{ video.video_id }}_{{ thumb.key }}.jpg"
+                                   class="px-3 py-1.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-xs font-medium hover:bg-gray-700 dark:hover:bg-gray-200 transition-colors duration-200 flex items-center gap-1" id="download-thumb-{{ thumb.key }}">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                    Download
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+            <!-- Quick Stats Card -->
+            <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden" id="quick-stats">
+                <div class="px-5 py-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider">Quick Stats</h3>
+                </div>
+                <div class="divide-y divide-gray-100 dark:divide-gray-800">
+                    <div class="px-5 py-3 flex items-center justify-between">
+                        <span class="text-sm text-gray-500 dark:text-gray-400">Views</span>
+                        <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ video.view_count }}</span>
+                    </div>
+                    <div class="px-5 py-3 flex items-center justify-between">
+                        <span class="text-sm text-gray-500 dark:text-gray-400">Likes</span>
+                        <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ video.like_count }}</span>
+                    </div>
+                    <div class="px-5 py-3 flex items-center justify-between">
+                        <span class="text-sm text-gray-500 dark:text-gray-400">Duration</span>
+                        <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ video.duration }}</span>
+                    </div>
+                    <div class="px-5 py-3 flex items-center justify-between">
+                        <span class="text-sm text-gray-500 dark:text-gray-400">Uploaded</span>
+                        <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ video.upload_date }}</span>
+                    </div>
+                    {% if video.categories %}
+                    <div class="px-5 py-3 flex items-center justify-between">
+                        <span class="text-sm text-gray-500 dark:text-gray-400">Category</span>
+                        <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ video.categories.0 }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Sidebar Ads -->
+            {% if sidebar_ads %}
+            <div class="space-y-4">
+                <p class="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wider">Sponsored</p>
+                {% for ad in sidebar_ads %}
+                <a href="{{ ad.link|default:'#' }}" target="_blank" rel="noopener noreferrer"
+                   class="block bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-md transition-shadow duration-300" id="sidebar-ad-{{ ad.pk }}">
+                    {% if ad.image %}
+                    <img src="{{ ad.image.url }}" alt="{{ ad.title }}" class="w-full aspect-video object-cover">
+                    {% endif %}
+                    <div class="p-3">
+                        <h4 class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ ad.title }}</h4>
+                        {% if ad.text %}
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">{{ ad.text }}</p>
+                        {% endif %}
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function() {
+    try {
+        const entry = {
+            title: {{ video.title|escapejs|safe|default:"'Unknown'" }},
+            url: '{{ url|escapejs }}',
+            thumbnail: 'https://img.youtube.com/vi/{{ video.video_id }}/default.jpg',
+            type: 'video',
+            videoId: '{{ video.video_id|escapejs }}',
+            timestamp: Date.now()
+        };
+        // Wrap title in quotes since escapejs doesn't add them
+        entry.title = "{{ video.title|escapejs }}";
+
+        let history = [];
+        try { history = JSON.parse(localStorage.getItem('youlyzer-history') || '[]'); } catch(e) {}
+
+        // Remove duplicate by videoId
+        history = history.filter(h => h.videoId !== entry.videoId);
+
+        // Add to front
+        history.unshift(entry);
+
+        // Cap at 10
+        if (history.length > 10) history = history.slice(0, 10);
+
+        localStorage.setItem('youlyzer-history', JSON.stringify(history));
+    } catch(e) {}
+})();
+</script>
+{% endblock %}
+
+

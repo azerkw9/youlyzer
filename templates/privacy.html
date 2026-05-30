@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy{% endblock %}
+{% block meta_description %}Youlyzer privacy policy — how we collect, use, and protect your data.{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
+        <div class="px-8 py-6 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Privacy Policy</h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Last updated: May 2024</p>
+        </div>
+        <div class="px-8 py-8 prose prose-gray dark:prose-invert max-w-none">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3 mt-0">1. Information We Collect</h2>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+                Youlyzer collects minimal information necessary to provide our services. When you use our YouTube analysis tools, we process the YouTube URLs you submit but do not permanently store them. If you use our contact form, we collect your name, email address, subject, and message content.
+            </p>
+
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">2. How We Use Your Information</h2>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+                The information we collect is used solely to provide and improve our services. YouTube URLs are processed in real-time to fetch video and channel data. Contact form submissions are stored securely and used only to respond to your inquiries.
+            </p>
+
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">3. Data Storage</h2>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+                Contact messages are stored in our database until manually deleted by administrators. We do not store YouTube video content permanently.
+            </p>
+
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">4. Third-Party Services</h2>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+                Our service interacts with YouTube (a Google service) to retrieve publicly available video and channel information using the official YouTube Data API. We do not share your personal information with third parties except as required by law.
+            </p>
+
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">5. Cookies</h2>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+                Youlyzer uses essential cookies required for the functioning of our website (such as CSRF protection tokens and session management). We do not use tracking or advertising cookies.
+            </p>
+
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">6. Your Rights</h2>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+                You have the right to request access to, correction of, or deletion of any personal information we hold about you. To exercise these rights, please contact us through our contact page.
+            </p>
+
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">7. Changes to This Policy</h2>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+                We may update this privacy policy from time to time. Any changes will be posted on this page with an updated revision date.
+            </p>
+
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">8. Contact</h2>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                If you have any questions about this privacy policy, please <a href="{% url 'contact' %}" class="text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 font-medium">contact us</a>.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

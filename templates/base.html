@@ -1,0 +1,219 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Youlyzer{% endblock %} — YouTube Analyzer</title>
+    <meta name="description" content="{% block meta_description %}Download YouTube thumbnails in all qualities, and view detailed video & channel information — all free.{% endblock %}">
+
+    <!-- Anti-flash: set dark class before any rendering -->
+    <script>
+        (function() {
+            const stored = localStorage.getItem('youlyzer-theme');
+            if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    borderRadius: {
+                        DEFAULT: '0px',
+                        'none': '0px',
+                        'sm': '0px',
+                        'md': '0px',
+                        'lg': '0px',
+                        'xl': '0px',
+                        '2xl': '0px',
+                        '3xl': '0px',
+                        'full': '0px',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50:  '#eef2ff',
+                            100: '#e0e7ff',
+                            200: '#c7d2fe',
+                            300: '#a5b4fc',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81',
+                            950: '#1e1b4b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans antialiased transition-colors duration-300">
+
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 shadow-sm transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="{% url 'home' %}" class="flex items-center gap-2 group" id="nav-logo">
+                    <div class="w-9 h-9 bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center shadow-lg shadow-brand-500/25 group-hover:shadow-brand-500/40 transition-shadow duration-300">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                            <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">You<span class="text-brand-600 dark:text-brand-400">lyzer</span></span>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center gap-1">
+                    <a href="{% url 'compare' %}" class="nav-link px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950/50 transition-all duration-200" id="nav-compare">Compare</a>
+                    {% if user.is_staff %}
+                    <a href="{% url 'admin_dashboard' %}" class="ml-2 px-4 py-2 text-sm font-medium bg-brand-600 text-white hover:bg-brand-700 shadow-md shadow-brand-500/20 transition-all duration-200" id="nav-admin">Dashboard</a>
+                    {% endif %}
+
+                    <!-- Dark Mode Toggle -->
+                    <button type="button" id="theme-toggle-btn"
+                            class="ml-2 p-2 text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
+                            aria-label="Toggle dark mode">
+                        <!-- Sun icon (shown in dark mode) -->
+                        <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                        <!-- Moon icon (shown in light mode) -->
+                        <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Mobile: Theme Toggle + Menu Button -->
+                <div class="flex items-center gap-1 md:hidden">
+                    <button type="button" id="theme-toggle-btn-mobile"
+                            class="p-2 text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
+                            aria-label="Toggle dark mode">
+                        <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                        <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                    </button>
+                    <button type="button" id="mobile-menu-btn" class="p-2 text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950/50 transition-all duration-200" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="square" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden pb-4 border-t border-gray-100 dark:border-gray-800 mt-2 pt-2">
+                <a href="{% url 'compare' %}" class="block px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950/50 transition-all duration-200">Compare</a>
+                {% if user.is_staff %}
+                <a href="{% url 'admin_dashboard' %}" class="block px-4 py-2 text-sm font-medium text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950/50 transition-all duration-200">Dashboard</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        {% for message in messages %}
+        <div class="mb-3 px-4 py-3 border-l-4 {% if message.tags == 'error' %}bg-red-50 dark:bg-red-950/50 border-red-500 text-red-800 dark:text-red-300{% elif message.tags == 'success' %}bg-emerald-50 dark:bg-emerald-950/50 border-emerald-500 text-emerald-800 dark:text-emerald-300{% else %}bg-blue-50 dark:bg-blue-950/50 border-blue-500 text-blue-800 dark:text-blue-300{% endif %} flex items-center justify-between" id="message-alert-{{ forloop.counter }}">
+            <p class="text-sm font-medium">{{ message }}</p>
+            <button onclick="this.parentElement.remove()" class="ml-4 text-current opacity-50 hover:opacity-100 transition-opacity">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main class="flex-1">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 mt-auto transition-colors duration-300">
+        {% block footer_ads %}{% endblock %}
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Brand -->
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="w-7 h-7 bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                            </svg>
+                        </div>
+                        <span class="text-lg font-bold text-gray-900 dark:text-white">You<span class="text-brand-600 dark:text-brand-400">lyzer</span></span>
+                    </div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Your all-in-one YouTube analysis toolkit. Download thumbnails and explore video data.</p>
+                </div>
+                <!-- Links -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-3">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'home' %}" class="text-sm text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors duration-200">Home</a></li>
+                        <li><a href="{% url 'about' %}" class="text-sm text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors duration-200">About Us</a></li>
+                        <li><a href="{% url 'contact' %}" class="text-sm text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors duration-200">Contact</a></li>
+                    </ul>
+                </div>
+                <!-- Legal -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-3">Legal</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'privacy' %}" class="text-sm text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors duration-200">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800">
+                <p class="text-center text-xs text-gray-400 dark:text-gray-500">&copy; {{ year|default:"2024" }} Youlyzer. All rights reserved. Not affiliated with YouTube or Google.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Dark Mode Toggle Script -->
+    <script>
+        (function() {
+            function toggleTheme() {
+                const html = document.documentElement;
+                const isDark = html.classList.toggle('dark');
+                localStorage.setItem('youlyzer-theme', isDark ? 'dark' : 'light');
+            }
+
+            // Bind both desktop and mobile toggle buttons
+            const desktopBtn = document.getElementById('theme-toggle-btn');
+            const mobileBtn = document.getElementById('theme-toggle-btn-mobile');
+            if (desktopBtn) desktopBtn.addEventListener('click', toggleTheme);
+            if (mobileBtn) mobileBtn.addEventListener('click', toggleTheme);
+        })();
+    </script>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
