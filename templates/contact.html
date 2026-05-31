@@ -49,6 +49,10 @@
                 <form method="post" action="{% url 'contact' %}" class="p-6 space-y-4" id="contact-form">
                     {% csrf_token %}
 
+                    <div style="display: none;" aria-hidden="true">
+                        {{ form.website }}
+                    </div>
+
                     <div>
                         <label for="contact-name" class="block text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1.5">Name</label>
                         {{ form.name }}

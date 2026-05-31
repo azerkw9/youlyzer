@@ -12,8 +12,8 @@ class AdAdmin(admin.ModelAdmin):
 
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):
-    list_display = ['subject', 'name', 'email', 'sent_at', 'is_read']
+    list_display = ['subject', 'name', 'email', 'ip_address', 'sent_at', 'is_read']
     list_filter = ['is_read', 'sent_at']
-    search_fields = ['name', 'email', 'subject', 'message']
+    search_fields = ['name', 'email', 'subject', 'message', 'ip_address']
     list_editable = ['is_read']
-    readonly_fields = ['name', 'email', 'subject', 'message', 'sent_at']
+    readonly_fields = ['name', 'email', 'subject', 'message', 'ip_address', 'sent_at']

@@ -34,6 +34,22 @@ class YouTubeURLForm(forms.Form):
 class ContactForm(forms.ModelForm):
     """Contact page form."""
 
+    website = forms.CharField(
+        required=False,
+        label='Website',
+        widget=forms.TextInput(attrs={
+            'autocomplete': 'off',
+            'tabindex': '-1',
+            'style': 'display: none;',
+        })
+    )
+
+    def clean_website(self):
+        website = self.cleaned_data.get('website')
+        if website:
+            raise forms.ValidationError('Spam detected.')
+        return website
+
     class Meta:
         model = ContactMessage
         fields = ['name', 'email', 'subject', 'message']

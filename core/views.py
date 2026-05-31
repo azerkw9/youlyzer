@@ -4,6 +4,7 @@ from urllib.error import URLError
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.contrib import messages
+from django.core.cache import cache
 
 from .forms import YouTubeURLForm, ContactForm
 from .models import Ad
@@ -129,9 +130,30 @@ def about(request):
 def contact(request):
     """Contact page with form."""
     if request.method == 'POST':
+        # Get IP address
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0].strip()
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+
+        # Rate limiting: max 2 requests per minute
+        cache_key = f'contact_spam_{ip}'
+        attempts = cache.get(cache_key, 0)
+        
+        if attempts >= 2:
+            messages.error(request, 'You are sending messages too fast. Please wait a minute before trying again.')
+            return redirect('contact')
+
         form = ContactForm(request.POST)
         if form.is_valid():
-            form.save()
+            # Save IP and increment rate limit
+            instance = form.save(commit=False)
+            instance.ip_address = ip
+            instance.save()
+            
+            cache.set(cache_key, attempts + 1, 60) # 60 seconds timeout
+            
             messages.success(request, 'Your message has been sent successfully! We\'ll get back to you soon.')
             return redirect('contact')
     else:
