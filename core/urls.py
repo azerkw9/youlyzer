@@ -19,13 +19,13 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
 
     # Custom admin dashboard
-    path('admin-dashboard/', admin_views.dashboard, name='admin_dashboard'),
-    path('admin-dashboard/ads/', admin_views.ads_list, name='admin_ads_list'),
-    path('admin-dashboard/ads/create/', admin_views.ad_create, name='admin_ad_create'),
-    path('admin-dashboard/ads/<int:pk>/edit/', admin_views.ad_edit, name='admin_ad_edit'),
-    path('admin-dashboard/ads/<int:pk>/delete/', admin_views.ad_delete, name='admin_ad_delete'),
-    path('admin-dashboard/messages/', admin_views.messages_list, name='admin_messages_list'),
-    path('admin-dashboard/messages/<int:pk>/', admin_views.message_detail, name='admin_message_detail'),
-    path('admin-dashboard/messages/<int:pk>/toggle-read/', admin_views.message_toggle_read, name='admin_message_toggle_read'),
-    path('admin-dashboard/messages/<int:pk>/delete/', admin_views.message_delete, name='admin_message_delete'),
+    path('lucius-dashboard/', admin_views.dashboard, name='admin_dashboard'),
+    path('lucius-dashboard/ads/', admin_views.ads_list, name='admin_ads_list'),
+    path('lucius-dashboard/ads/create/', admin_views.ad_create, name='admin_ad_create'),
+    path('lucius-dashboard/ads/<int:pk>/edit/', admin_views.ad_edit, name='admin_ad_edit'),
+    path('lucius-dashboard/ads/<int:pk>/delete/', admin_views.ad_delete, name='admin_ad_delete'),
+    path('lucius-dashboard/messages/', admin_views.messages_list, name='admin_messages_list'),
+    path('lucius-dashboard/messages/<int:pk>/', admin_views.message_detail, name='admin_message_detail'),
+    path('lucius-dashboard/messages/<int:pk>/toggle-read/', admin_views.message_toggle_read, name='admin_message_toggle_read'),
+    path('lucius-dashboard/messages/<int:pk>/delete/', admin_views.message_delete, name='admin_message_delete'),
 ]
