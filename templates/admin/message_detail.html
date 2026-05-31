@@ -14,6 +14,9 @@
             <div>
                 <p class="text-sm font-medium text-gray-900">{{ msg.name }}</p>
                 <p class="text-xs text-gray-500">{{ msg.email }}</p>
+                {% if msg.ip_address %}
+                <p class="text-xs text-gray-400 mt-1">IP: {{ msg.ip_address }}</p>
+                {% endif %}
             </div>
             <div class="flex items-center gap-3">
                 <span class="text-xs text-gray-400">{{ msg.sent_at|date:"M d, Y H:i" }}</span>

@@ -17,6 +17,7 @@
                         <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase w-6"></th>
                         <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Subject</th>
                         <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">From</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">IP Address</th>
                         <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Date</th>
                         <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Actions</th>
                     </tr>
@@ -27,6 +28,7 @@
                         <td class="px-6 py-4">{% if not msg.is_read %}<span class="w-2 h-2 bg-brand-500 block"></span>{% endif %}</td>
                         <td class="px-6 py-4"><a href="{% url 'admin_message_detail' msg.pk %}" class="font-medium text-gray-900 hover:text-brand-600 {% if not msg.is_read %}font-semibold{% endif %}">{{ msg.subject }}</a></td>
                         <td class="px-6 py-4"><p class="text-gray-900">{{ msg.name }}</p><p class="text-xs text-gray-400">{{ msg.email }}</p></td>
+                        <td class="px-6 py-4 text-xs text-gray-500">{% if msg.ip_address %}{{ msg.ip_address }}{% else %}-{% endif %}</td>
                         <td class="px-6 py-4 text-xs text-gray-500">{{ msg.sent_at|date:"M d, Y H:i" }}</td>
                         <td class="px-6 py-4 text-right">
                             <div class="flex items-center justify-end gap-2">
